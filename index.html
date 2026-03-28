@@ -16,10 +16,10 @@
             flex-direction: column;
             align-items: center;
             overflow-x: hidden;
-            -webkit-tap-highlight-color: transparent;
+            -webkit-tap-highlight-color: transparent; /* Clean mobile taps */
         }
 
-        /* The Neon Header Rectangle */
+        /* Neon Orange Header Rectangle */
         header {
             width: 100%;
             max-width: 400px;
@@ -33,6 +33,7 @@
             animation: flicker 3s infinite;
         }
 
+        /* Glowing Courier Text */
         h1 {
             font-family: "Courier New", Courier, monospace;
             font-size: 2.2rem;
@@ -100,9 +101,10 @@
 
         footer {
             margin-top: 60px;
-            color: #333;
+            color: #444;
             font-size: 0.8rem;
             font-family: "Courier New", monospace;
+            text-align: center;
         }
     </style>
 </head>
@@ -136,6 +138,22 @@
                 <span class="artist-name">Leftfield</span>
             </div>
         </a>
+
+        <a href="https://www.youtube.com/watch?v=0_u6_n2Y6Xg" class="song-card" target="_blank">
+            <img src="assets/renaissance.png" alt="Renaissance" class="icon">
+            <div class="info">
+                <span class="song-title">Renaissance</span>
+                <span class="artist-name">The Mix Collection</span>
+            </div>
+        </a>
+
+        <a href="https://www.youtube.com/watch?v=zV5e5FyhnmU" class="song-card" target="_blank">
+            <img src="assets/gatecrasher-late-set.png" alt="Gatecrasher Black" class="icon">
+            <div class="info">
+                <span class="song-title">Black (The Late Set)</span>
+                <span class="artist-name">Gatecrasher</span>
+            </div>
+        </a>
     </div>
 
     <footer>
@@ -148,6 +166,7 @@
         let audioCtx;
 
         function playBeep() {
+            // First click on mobile initializes audio
             if (!audioCtx) {
                 audioCtx = new AudioContext();
             }
@@ -159,10 +178,10 @@
             const gainNode = audioCtx.createGain();
 
             oscillator.type = 'sine';
-            oscillator.frequency.setValueAtTime(880, audioCtx.currentTime);
+            oscillator.frequency.setValueAtTime(880, audioCtx.currentTime); // High pitch beep
             
-            gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
-            gainNode.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.1);
+            gainNode.gain.setValueAtTime(0.05, audioCtx.currentTime); // Subtle volume
+            gainNode.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.1); // Quick fade
 
             oscillator.connect(gainNode);
             gainNode.connect(audioCtx.destination);
