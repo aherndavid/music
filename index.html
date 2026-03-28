@@ -3,7 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Music | GitHub Repo</title>
+    <title>Music | Collection</title>
+
+    <link rel="icon" type="image/png" href="assets/music-icon.png">
+    <link rel="apple-touch-icon" href="assets/music-icon.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
     <style>
         /* Mobile-First Base Styles */
         body {
@@ -16,7 +22,7 @@
             flex-direction: column;
             align-items: center;
             overflow-x: hidden;
-            -webkit-tap-highlight-color: transparent; /* Clean mobile taps */
+            -webkit-tap-highlight-color: transparent;
         }
 
         /* Neon Orange Header Rectangle */
@@ -105,6 +111,7 @@
             font-size: 0.8rem;
             font-family: "Courier New", monospace;
             text-align: center;
+            padding-bottom: 40px;
         }
     </style>
 </head>
@@ -161,12 +168,10 @@
     </footer>
 
     <script>
-        // Web Audio API Beep Function
         const AudioContext = window.AudioContext || window.webkitAudioContext;
         let audioCtx;
 
         function playBeep() {
-            // First click on mobile initializes audio
             if (!audioCtx) {
                 audioCtx = new AudioContext();
             }
@@ -178,10 +183,10 @@
             const gainNode = audioCtx.createGain();
 
             oscillator.type = 'sine';
-            oscillator.frequency.setValueAtTime(880, audioCtx.currentTime); // High pitch beep
+            oscillator.frequency.setValueAtTime(880, audioCtx.currentTime); 
             
-            gainNode.gain.setValueAtTime(0.05, audioCtx.currentTime); // Subtle volume
-            gainNode.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.1); // Quick fade
+            gainNode.gain.setValueAtTime(0.05, audioCtx.currentTime); 
+            gainNode.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.1);
 
             oscillator.connect(gainNode);
             gainNode.connect(audioCtx.destination);
