@@ -11,7 +11,6 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
     <style>
-        /* Mobile-First Base Styles */
         body {
             background-color: #000;
             color: #ffffff;
@@ -103,7 +102,7 @@
             color: #888;
         }
 
-        /* Style for when a song is playing */
+        /* Active playing style */
         .playing .song-title {
             color: #ff6600;
             text-shadow: 0 0 5px #ff6600;
@@ -142,13 +141,22 @@
             </div>
         </a>
 
-        <div class="song-card" id="leftfield-card" onclick="toggleSong('life-audio', this)">
+        <div class="song-card" onclick="toggleSong('life-audio', this, 'Leftfield')">
             <img src="assets/leftfield.png" alt="Leftfield" class="icon">
             <div class="info">
                 <span class="song-title">Song of Life</span>
-                <span class="artist-name" id="leftfield-status">Leftfield (Click to Play)</span>
+                <span class="artist-name">Leftfield (Tap to Play)</span>
             </div>
-            <audio id="life-audio" src="https://files.catbox.moe/ao17b3.wav"></audio>
+            <audio id="life-audio" class="music-player" src="https://files.catbox.moe/ao17b3.wav"></audio>
+        </div>
+
+        <div class="song-card" onclick="toggleSong('tainted-audio', this, 'Impedance')">
+            <img src="assets/tainted-love.png" alt="Tainted Love" class="icon">
+            <div class="info">
+                <span class="song-title">Tainted Love (Impedance Remix)</span>
+                <span class="artist-name">Impedance (Tap to Play)</span>
+            </div>
+            <audio id="tainted-audio" class="music-player" src="https://files.catbox.moe/3frl6t.wav"></audio>
         </div>
 
         <a href="https://www.youtube.com/watch?v=0_u6_n2Y6Xg" class="song-card" target="_blank">
@@ -176,7 +184,6 @@
         const AudioContext = window.AudioContext || window.webkitAudioContext;
         let audioCtx;
 
-        // Initialize Audio Context on first click (Browser Requirement)
         function initAudio() {
             if (!audioCtx) {
                 audioCtx = new AudioContext();
@@ -191,34 +198,49 @@
             if (!audioCtx) return;
             const oscillator = audioCtx.createOscillator();
             const gainNode = audioCtx.createGain();
-
             oscillator.type = 'sine';
             oscillator.frequency.setValueAtTime(880, audioCtx.currentTime); 
-            
             gainNode.gain.setValueAtTime(0.05, audioCtx.currentTime); 
             gainNode.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.1);
-
             oscillator.connect(gainNode);
             gainNode.connect(audioCtx.destination);
-
             oscillator.start();
             oscillator.stop(audioCtx.currentTime + 0.1);
         }
 
-        // Logic to play/pause the actual song
-        function toggleSong(audioId, cardEl) {
-            const song = document.getElementById(audioId);
-            const statusText = document.getElementById('leftfield-status');
+        function toggleSong(audioId, cardEl, artistName) {
+            const allAudios = document.querySelectorAll('.music-player');
+            const allCards = document.querySelectorAll('.song-card');
+            const currentAudio = document.getElementById(audioId);
+            const statusText = cardEl.querySelector('.artist-name');
 
-            if (song.paused) {
-                song.play();
-                cardEl.classList.add('playing');
-                statusText.innerText = "Leftfield (Now Playing...)";
-            } else {
-                song.pause();
+            // If the clicked song is already playing, pause it
+            if (!currentAudio.paused) {
+                currentAudio.pause();
                 cardEl.classList.remove('playing');
-                statusText.innerText = "Leftfield (Paused)";
+                statusText.innerText = artistName + " (Paused)";
+                return;
             }
+
+            // Otherwise, pause ALL other songs first
+            allAudios.forEach(audio => {
+                audio.pause();
+                audio.currentTime = 0; // Reset to start
+            });
+
+            allCards.forEach(card => {
+                card.classList.remove('playing');
+                // Reset text for direct play cards
+                const name = card.querySelector('.artist-name');
+                if(name && name.innerText.includes('Now Playing')) {
+                    name.innerText = name.innerText.replace(" (Now Playing...)", " (Tap to Play)");
+                }
+            });
+
+            // Play the chosen song
+            currentAudio.play();
+            cardEl.classList.add('playing');
+            statusText.innerText = artistName + " (Now Playing...)";
         }
     </script>
 </body>
