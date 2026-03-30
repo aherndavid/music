@@ -1,0 +1,15 @@
+{
+  "artists": [
+    {
+      "name": "dpaul",
+      "folder_logo": "assets/dpaul.png",
+      "tracks": [
+        {
+          "title": "can you just?",
+          "file": "dpaul/can-you-just.aif",
+          "artwork": "assets/can-you-just.png"
+        }
+      ]
+    }
+  ]
+}
