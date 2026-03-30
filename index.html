@@ -25,7 +25,6 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        /* Neon Orange Header Rectangle */
         header {
             width: 100%;
             max-width: 400px;
@@ -39,7 +38,6 @@
             animation: flicker 3s infinite;
         }
 
-        /* Glowing Courier Text */
         h1 {
             font-family: "Courier New", Courier, monospace;
             font-size: 2.2rem;
@@ -70,13 +68,13 @@
             display: flex;
             flex-direction: column;
             transition: transform 0.1s ease;
+            cursor: pointer;
         }
 
         .song-card:active {
             transform: scale(0.96);
         }
 
-        /* Large Square Icons from /assets folder */
         .icon {
             width: 100%;
             aspect-ratio: 1 / 1;
@@ -105,6 +103,12 @@
             color: #888;
         }
 
+        /* Style for when a song is playing */
+        .playing .song-title {
+            color: #ff6600;
+            text-shadow: 0 0 5px #ff6600;
+        }
+
         footer {
             margin-top: 60px;
             color: #444;
@@ -115,7 +119,7 @@
         }
     </style>
 </head>
-<body onclick="playBeep()">
+<body onclick="initAudio()">
 
     <header>
         <h1>MUSIC</h1>
@@ -138,13 +142,14 @@
             </div>
         </a>
 
-        <a href="https://files.catbox.moe/ao17b3.wav" class="song-card" target="_blank">
+        <div class="song-card" id="leftfield-card" onclick="toggleSong('life-audio', this)">
             <img src="assets/leftfield.png" alt="Leftfield" class="icon">
             <div class="info">
                 <span class="song-title">Song of Life</span>
-                <span class="artist-name">Leftfield</span>
+                <span class="artist-name" id="leftfield-status">Leftfield (Click to Play)</span>
             </div>
-        </a>
+            <audio id="life-audio" src="https://files.catbox.moe/ao17b3.wav"></audio>
+        </div>
 
         <a href="https://www.youtube.com/watch?v=0_u6_n2Y6Xg" class="song-card" target="_blank">
             <img src="assets/renaissance.png" alt="Renaissance" class="icon">
@@ -171,14 +176,19 @@
         const AudioContext = window.AudioContext || window.webkitAudioContext;
         let audioCtx;
 
-        function playBeep() {
+        // Initialize Audio Context on first click (Browser Requirement)
+        function initAudio() {
             if (!audioCtx) {
                 audioCtx = new AudioContext();
             }
             if (audioCtx.state === 'suspended') {
                 audioCtx.resume();
             }
+            playBeep();
+        }
 
+        function playBeep() {
+            if (!audioCtx) return;
             const oscillator = audioCtx.createOscillator();
             const gainNode = audioCtx.createGain();
 
@@ -193,6 +203,22 @@
 
             oscillator.start();
             oscillator.stop(audioCtx.currentTime + 0.1);
+        }
+
+        // Logic to play/pause the actual song
+        function toggleSong(audioId, cardEl) {
+            const song = document.getElementById(audioId);
+            const statusText = document.getElementById('leftfield-status');
+
+            if (song.paused) {
+                song.play();
+                cardEl.classList.add('playing');
+                statusText.innerText = "Leftfield (Now Playing...)";
+            } else {
+                song.pause();
+                cardEl.classList.remove('playing');
+                statusText.innerText = "Leftfield (Paused)";
+            }
         }
     </script>
 </body>
