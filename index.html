@@ -159,6 +159,15 @@
             <audio id="tainted-audio" class="music-player" src="https://files.catbox.moe/3frl6t.wav"></audio>
         </div>
 
+        <div class="song-card" onclick="toggleSong('show-me-love-audio', this, 'Robin S')">
+            <img src="assets/show-me-love.jpg" alt="Show Me Love" class="icon">
+            <div class="info">
+                <span class="song-title">Show Me Love</span>
+                <span class="artist-name">Robin S (Tap to Play)</span>
+            </div>
+            <audio id="show-me-love-audio" class="music-player" src="https://files.catbox.moe/p9ox59.wav"></audio>
+        </div>
+
         <a href="https://www.youtube.com/watch?v=0_u6_n2Y6Xg" class="song-card" target="_blank">
             <img src="assets/renaissance.png" alt="Renaissance" class="icon">
             <div class="info">
@@ -214,7 +223,6 @@
             const currentAudio = document.getElementById(audioId);
             const statusText = cardEl.querySelector('.artist-name');
 
-            // If the clicked song is already playing, pause it
             if (!currentAudio.paused) {
                 currentAudio.pause();
                 cardEl.classList.remove('playing');
@@ -222,22 +230,19 @@
                 return;
             }
 
-            // Otherwise, pause ALL other songs first
             allAudios.forEach(audio => {
                 audio.pause();
-                audio.currentTime = 0; // Reset to start
+                audio.currentTime = 0; 
             });
 
             allCards.forEach(card => {
                 card.classList.remove('playing');
-                // Reset text for direct play cards
                 const name = card.querySelector('.artist-name');
                 if(name && name.innerText.includes('Now Playing')) {
                     name.innerText = name.innerText.replace(" (Now Playing...)", " (Tap to Play)");
                 }
             });
 
-            // Play the chosen song
             currentAudio.play();
             cardEl.classList.add('playing');
             statusText.innerText = artistName + " (Now Playing...)";
