@@ -102,7 +102,6 @@
             color: #888;
         }
 
-        /* Active playing style */
         .playing .song-title {
             color: #ff6600;
             text-shadow: 0 0 5px #ff6600;
@@ -169,7 +168,7 @@
             <audio id="show-me-love-audio" class="music-player" src="https://files.catbox.moe/p9ox59.wav"></audio>
         </div>
 
-        <a href="https://www.youtube.com/watch?v=0_u6_n2Y6Xg" class="song-card" target="_blank">
+        <a href="https://lab.dpaul.studio/launchers/renaissance-launcher.html" class="song-card" target="_blank">
             <img src="assets/renaissance.png" alt="Renaissance" class="icon">
             <div class="info">
                 <span class="song-title">Renaissance</span>
@@ -177,7 +176,7 @@
             </div>
         </a>
 
-        <a href="https://www.youtube.com/watch?v=zV5e5FyhnmU" class="song-card" target="_blank">
+        <a href="https://youtu.be/zV5e5FyhnmU" class="song-card" target="_blank">
             <img src="assets/gatecrasher-late-set.png" alt="Gatecrasher Black" class="icon">
             <div class="info">
                 <span class="song-title">Black (The Late Set)</span>
@@ -240,7 +239,9 @@
                 card.classList.remove('playing');
                 const name = card.querySelector('.artist-name');
                 if(name && (name.innerText.includes('Now Playing') || name.innerText.includes('Paused'))) {
-                    name.innerText = artistName + " (Tap to Play)";
+                    // This finds the artist name by stripping the status suffix
+                    const baseArtist = name.innerText.split(' (')[0];
+                    name.innerText = baseArtist + " (Tap to Play)";
                 }
             });
 
