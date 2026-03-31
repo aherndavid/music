@@ -132,15 +132,15 @@
             </div>
             <audio id="passion-audio" class="music-player" src="https://files.catbox.moe/e6fxl8.wav"></audio>
         </div>
-            <audio id="you-got-audio" class="music-player" src="https://files.catbox.moe/7nm188.wav"></audio>
 
-        <a href="https://files.catbox.moe/7nm188.wav" class="song-card" target="_blank">
+        <div class="song-card" onclick="toggleSong('you-got-audio', this, 'Candi Staton')">
             <img src="assets/candi.jpeg" alt="Candi Staton" class="icon">
             <div class="info">
                 <span class="song-title">You Got the Love (1986)</span>
-                <span class="artist-name">Candi Staton</span>
+                <span class="artist-name">Candi Staton (Tap to Play)</span>
             </div>
-        </a>
+            <audio id="you-got-audio" class="music-player" src="https://files.catbox.moe/7nm188.wav"></audio>
+        </div>
 
         <div class="song-card" onclick="toggleSong('life-audio', this, 'Leftfield')">
             <img src="assets/leftfield.png" alt="Leftfield" class="icon">
@@ -240,7 +240,6 @@
                 card.classList.remove('playing');
                 const name = card.querySelector('.artist-name');
                 if(name && (name.innerText.includes('Now Playing') || name.innerText.includes('Paused'))) {
-                    // This finds the artist name by stripping the status suffix
                     const baseArtist = name.innerText.split(' (')[0];
                     name.innerText = baseArtist + " (Tap to Play)";
                 }
