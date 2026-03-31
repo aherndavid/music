@@ -125,13 +125,14 @@
     </header>
 
     <div class="music-grid">
-        <a href="https://www.youtube.com/watch?v=8jR-TD8NWSE" class="song-card" target="_blank">
+        <div class="song-card" onclick="toggleSong('passion-audio', this, 'Gat Decor')">
             <img src="assets/passion.png" alt="Gat Decor" class="icon">
             <div class="info">
                 <span class="song-title">Passion (Naked Mix)</span>
-                <span class="artist-name">Gat Decor</span>
+                <span class="artist-name">Gat Decor (Tap to Play)</span>
             </div>
-        </a>
+            <audio id="passion-audio" class="music-player" src="https://files.catbox.moe/e6fxl8.wav"></audio>
+        </div>
 
         <a href="https://files.catbox.moe/7nm188.wav" class="song-card" target="_blank">
             <img src="assets/candi.jpeg" alt="Candi Staton" class="icon">
@@ -238,8 +239,8 @@
             allCards.forEach(card => {
                 card.classList.remove('playing');
                 const name = card.querySelector('.artist-name');
-                if(name && name.innerText.includes('Now Playing')) {
-                    name.innerText = name.innerText.replace(" (Now Playing...)", " (Tap to Play)");
+                if(name && (name.innerText.includes('Now Playing') || name.innerText.includes('Paused'))) {
+                    name.innerText = artistName + " (Tap to Play)";
                 }
             });
 
