@@ -133,7 +133,7 @@
             </div>
         </a>
 
-        <a href="https://files.catbox.moe/7nm188.wav" class="song-card" target="_blank">
+        <a href="https://www.youtube.com/watch?v=BvkHa7s1yGc" class="song-card" target="_blank">
             <img src="assets/candi.jpeg" alt="Candi Staton" class="icon">
             <div class="info">
                 <span class="song-title">You Got the Love (1986)</span>
@@ -151,30 +151,12 @@
         </div>
 
         <div class="song-card" onclick="toggleSong('tainted-audio', this, 'Impedance')">
-            <img src="assets/tainted-love-impedance.jpg" alt="Tainted Love" class="icon">
+            <img src="assets/tainted-love.png" alt="Tainted Love" class="icon">
             <div class="info">
                 <span class="song-title">Tainted Love (Impedance Remix)</span>
                 <span class="artist-name">Impedance (Tap to Play)</span>
             </div>
             <audio id="tainted-audio" class="music-player" src="https://files.catbox.moe/3frl6t.wav"></audio>
-        </div>
-
-        <div class="song-card" onclick="toggleSong('dpaul-audio', this, 'dpaul')">
-            <img src="assets/can-you-just.png" alt="can you just?" class="icon">
-            <div class="info">
-                <span class="song-title">can you just?</span>
-                <span class="artist-name">dpaul (Tap to Play)</span>
-            </div>
-            <audio id="dpaul-audio" class="music-player" src="https://files.catbox.moe/pjqonm.aif"></audio>
-        </div>
-
-        <div class="song-card" onclick="toggleSong('terminator-audio', this, 'Goldie')">
-            <img src="assets/terminator.png" alt="Terminator" class="icon">
-            <div class="info">
-                <span class="song-title">Terminator</span>
-                <span class="artist-name">Goldie (Tap to Play)</span>
-            </div>
-            <audio id="terminator-audio" class="music-player" src="https://files.catbox.moe/yqfk90.wav"></audio>
         </div>
 
         <a href="https://www.youtube.com/watch?v=0_u6_n2Y6Xg" class="song-card" target="_blank">
@@ -232,6 +214,7 @@
             const currentAudio = document.getElementById(audioId);
             const statusText = cardEl.querySelector('.artist-name');
 
+            // If the clicked song is already playing, pause it
             if (!currentAudio.paused) {
                 currentAudio.pause();
                 cardEl.classList.remove('playing');
@@ -239,19 +222,22 @@
                 return;
             }
 
+            // Otherwise, pause ALL other songs first
             allAudios.forEach(audio => {
                 audio.pause();
-                audio.currentTime = 0; 
+                audio.currentTime = 0; // Reset to start
             });
 
             allCards.forEach(card => {
                 card.classList.remove('playing');
+                // Reset text for direct play cards
                 const name = card.querySelector('.artist-name');
                 if(name && name.innerText.includes('Now Playing')) {
                     name.innerText = name.innerText.replace(" (Now Playing...)", " (Tap to Play)");
                 }
             });
 
+            // Play the chosen song
             currentAudio.play();
             cardEl.classList.add('playing');
             statusText.innerText = artistName + " (Now Playing...)";
